@@ -105,3 +105,6 @@ dist
 
 # Personal todo files
 todo.md
+
+# .vscode config files
+/.vscode
