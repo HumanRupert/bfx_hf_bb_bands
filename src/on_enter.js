@@ -1,6 +1,4 @@
-const _get = require("lodash/get");
 const HFS = require("bfx-hf-strategy");
-const { times } = require("lodash");
 
 module.exports = async (state = {}, update = {}) => {
   const { price, mts: timestamp } = update;

@@ -1,7 +1,10 @@
 const { SYMBOLS, TIME_FRAMES } = require("bfx-hf-util");
 const { BollingerBands } = require("bfx-hf-indicators");
 const HFS = require("bfx-hf-strategy");
+
+//  handlers
 const on_enter = require("./on_enter");
+const on_long = require("./on_long");
 
 module.exports = ({
   symbol = SYMBOLS.BTC_USD,
@@ -19,4 +22,5 @@ module.exports = ({
     },
 
     onEnter: on_enter,
+    onUpdateLong: on_long,
   });
