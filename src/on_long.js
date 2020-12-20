@@ -1,8 +1,10 @@
 const HFS = require("bfx-hf-strategy");
 
+const lookForTrade = require("./look_for_trade");
+
 module.exports = async (state = {}, update = {}) => {
   const { candle, mts: timestamp, price } = update;
-  const { open, high, low, close } = candle;
+  const { open, close } = candle;
 
   const orderParams = {
     mtsCreate: timestamp,
@@ -27,5 +29,10 @@ module.exports = async (state = {}, update = {}) => {
 
   if (!isCandleThreeQuartsBelowStd) return state;
 
-  return HFS.closePositionMarket(state, orderParams);
+  let newState = await HFS.closePositionMarket(state, orderParams);
+
+  //  look if should open short
+  newState = await lookForTrade(newState, update);
+
+  return newState;
 };
