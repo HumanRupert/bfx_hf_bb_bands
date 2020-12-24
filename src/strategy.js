@@ -7,10 +7,7 @@ const on_enter = require("./on_enter");
 const on_long = require("./on_long");
 const on_short = require("./on_short");
 
-module.exports = ({
-  symbol = SYMBOLS.BTC_USD,
-  tf = TIME_FRAMES.ONE_DAY,
-} = {}) =>
+module.exports = ({ symbol = SYMBOLS.BTC_USD, tf = TIME_FRAMES.ONE_DAY }) =>
   HFS.define({
     id: "bbands",
     name: "bbands",

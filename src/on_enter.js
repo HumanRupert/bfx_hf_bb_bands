@@ -1,5 +1,3 @@
-const HFS = require("bfx-hf-strategy");
-
 const lookForTrade = require("./look_for_trade");
 
 module.exports = async (state = {}, update = {}) => {
