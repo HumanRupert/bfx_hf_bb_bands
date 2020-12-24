@@ -1,9 +1,10 @@
 const HFS = require("bfx-hf-strategy");
 const lookForTrade = require("./look_for_trade");
+const { getBBands, checkIfShouldClose } = require("./helpers");
 
 module.exports = async (state = {}, update = {}) => {
   const { candle, mts: timestamp, price } = update;
-  const { open, high, low, close } = candle;
+  const { open, close } = candle;
 
   const orderParams = {
     mtsCreate: timestamp,
@@ -11,22 +12,18 @@ module.exports = async (state = {}, update = {}) => {
     price,
   };
 
-  const indicatorValues = HFS.indicatorValues(state);
-  const { bbands1 } = indicatorValues;
-  const { bottom: bottomBand1 } = bbands1;
+  const bands = getBBands(state);
 
   const isCandleRed = open >= close;
   if (isCandleRed) return state;
 
-  const isCloseBelowStd = bottomBand1 > close;
+  const isCloseBelowStd = bands.minusOne > close;
   if (isCloseBelowStd) return state;
 
   //  check if 75% of candle body is below 1 std
-  const candleBody = close - open;
-  const closeStdDist = close - bottomBand1;
-  const isCandleThreeQuartsBelowStd = closeStdDist / candleBody >= 0.75;
+  const shouldClose = checkIfShouldClose(close, open, bands, "short");
 
-  if (!isCandleThreeQuartsBelowStd) return state;
+  if (!shouldClose) return state;
 
   let newState = await HFS.closePositionMarket(state, orderParams);
 

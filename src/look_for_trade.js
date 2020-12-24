@@ -1,23 +1,20 @@
 const HFS = require("bfx-hf-strategy");
+const { getBBands } = require("./helpers");
 
 module.exports = async (state = {}, update = {}) => {
   const { price, mts: timestamp } = update;
-
   const orderParams = {
     mtsCreate: timestamp,
     amount: 1,
     price,
   };
 
-  const indicatorValues = HFS.indicatorValues(state);
-  const { bbands1, bbands2 } = indicatorValues;
-  const { top: topBand1, bottom: bottomBand1 } = bbands1;
-  const { top: topBand2, bottom: bottomBand2 } = bbands2;
+  const bands = getBBands(state);
 
   // between +1 SD and +2 SD from mean, the trend is up
-  const isBuyZone = topBand2 >= price && price >= topBand1;
+  const isBuyZone = bands.plusTwo >= price && price >= bands.plusOne;
   // between -1 SD and -2 SD from mean, the trend is down
-  const isSellZone = bottomBand2 <= price && price <= bottomBand1;
+  const isSellZone = bands.minusTwo <= price && price <= bands.minusOne;
 
   if (isSellZone) {
     return HFS.openShortPositionMarket(state, orderParams);
