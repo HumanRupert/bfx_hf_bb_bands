@@ -1,5 +1,5 @@
 const HFS = require("bfx-hf-strategy");
-const { getBBands } = require("./helpers");
+const { getBBands, checkIfIsUptrend } = require("./helpers");
 
 module.exports = async (state = {}, update = {}) => {
   const { price, mts: timestamp } = update;
@@ -16,11 +16,13 @@ module.exports = async (state = {}, update = {}) => {
   // between -1 SD and -2 SD from mean, the trend is down
   const isSellZone = bands.minusTwo <= price && price <= bands.minusOne;
 
-  if (isSellZone) {
+  const isUptrend = checkIfIsUptrend(state);
+
+  if (isSellZone && !isUptrend) {
     return HFS.openShortPositionMarket(state, orderParams);
   }
 
-  if (isBuyZone) {
+  if (isBuyZone && isUptrend) {
     return HFS.openLongPositionMarket(state, orderParams);
   }
 

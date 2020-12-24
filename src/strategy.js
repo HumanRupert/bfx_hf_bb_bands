@@ -1,5 +1,5 @@
 const { SYMBOLS, TIME_FRAMES } = require("bfx-hf-util");
-const { BollingerBands } = require("bfx-hf-indicators");
+const { BollingerBands, SMA } = require("bfx-hf-indicators");
 const HFS = require("bfx-hf-strategy");
 
 //  handlers
@@ -20,6 +20,8 @@ module.exports = ({
     indicators: {
       bbands2: new BollingerBands([20, 2]),
       bbands1: new BollingerBands([20, 1]),
+      smaShort: new SMA([25]),
+      smaLong: new SMA([100]),
     },
 
     onEnter: on_enter,

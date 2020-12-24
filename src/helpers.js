@@ -13,6 +13,7 @@ const getBBands = (state) => {
     minusTwo,
   };
 };
+
 const checkIfShouldClose = (close, open, bands, position) => {
   const candleBody = Math.abs(close - open);
 
@@ -25,7 +26,15 @@ const checkIfShouldClose = (close, open, bands, position) => {
   return shouldClose;
 };
 
+const checkIfIsUptrend = (state) => {
+  const indicatorValues = HFS.indicatorValues(state);
+  const { smaShort, smaLong } = indicatorValues;
+  const isUpTrend = smaShort > smaLong;
+  return isUpTrend;
+};
+
 module.exports = {
   getBBands,
   checkIfShouldClose,
+  checkIfIsUptrend,
 };
