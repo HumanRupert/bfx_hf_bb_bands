@@ -5,6 +5,7 @@ const HFS = require("bfx-hf-strategy");
 //  handlers
 const on_enter = require("./on_enter");
 const on_long = require("./on_long");
+const on_short = require("./on_short");
 
 module.exports = ({
   symbol = SYMBOLS.BTC_USD,
@@ -23,4 +24,5 @@ module.exports = ({
 
     onEnter: on_enter,
     onUpdateLong: on_long,
+    onUpdateShort: on_short,
   });
