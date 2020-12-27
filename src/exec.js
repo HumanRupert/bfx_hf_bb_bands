@@ -13,7 +13,7 @@ const market = {
 };
 
 const getCandles = async () => {
-  const rawCandleData = await getData();
+  const rawCandleData = await getData(market);
 
   const candles = rawCandleData
     .sort((a, b) => a[0] - b[0])
